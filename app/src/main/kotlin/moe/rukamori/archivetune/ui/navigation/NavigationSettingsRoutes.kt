@@ -7,10 +7,12 @@
 package moe.rukamori.archivetune.ui.navigation
 
 import android.net.Uri
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import moe.rukamori.archivetune.constants.UpdateChannel
 import moe.rukamori.archivetune.defaultUpdateChannel
@@ -139,7 +141,8 @@ internal fun NavGraphBuilder.settingsNavigationRoutes(
     composable("settings/po_token") {
         PoTokenScreen(navController)
     }
-    composable(
+    // Hosted in its own window: inside the scaffold's layer tree the login WebView flickers.
+    dialog(
         route = "$LOGIN_ROUTE?$LOGIN_URL_ARGUMENT={$LOGIN_URL_ARGUMENT}",
         arguments =
             listOf(
@@ -148,6 +151,11 @@ internal fun NavGraphBuilder.settingsNavigationRoutes(
                     nullable = true
                     defaultValue = null
                 },
+            ),
+        dialogProperties =
+            DialogProperties(
+                usePlatformDefaultWidth = false,
+                decorFitsSystemWindows = false,
             ),
     ) { backStackEntry ->
         LoginScreen(
