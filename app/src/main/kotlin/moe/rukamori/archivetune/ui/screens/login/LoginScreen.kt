@@ -115,7 +115,6 @@ fun LoginScreen(
                     .imePadding(),
                 factory = { context ->
                     WebView(context).apply {
-                        setBackgroundColor(0)
                         keepScrollGestures()
                         val cookieManager = CookieManager.getInstance()
                         webViewClient =
